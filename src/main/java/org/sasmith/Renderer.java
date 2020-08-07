@@ -35,6 +35,7 @@ public class Renderer extends Application {
         Timeline update = new Timeline(new KeyFrame(Duration.millis(16), ev -> {
             update(((GridPane)window.getChildren().get(1)));
             stage.sizeToScene();
+            stage.setResizable(false);
             stage.show();
         }));
         update.setCycleCount(Animation.INDEFINITE);
@@ -58,19 +59,38 @@ public class Renderer extends Application {
             String[] coord = btn.getId().split(",");
             int x = Integer.parseInt(coord[0]);
             int y = Integer.parseInt(coord[1]);
+            Node n = logic.getBoard().getNode(x, y);
 
-            if(logic.getBoard().getNode(x, y).isSeen()){
-                btn.setText("" + logic.getBoard().getNode(x, y).getAdj());
-            } else if(logic.getBoard().getNode(x, y).isFlagged()){
-                btn.setText("*");
+            if(!logic.getFailState()) {
+                if (n.isSeen() && !n.isMine()) {
+                    btn.setText("" + n.getAdj());
+                } else if (n.isFlagged()) {
+                    btn.setText("*");
+                } else {
+                    btn.setText("");
+                }
             } else {
-                btn.setText("");
+                if(n.isMine()){
+                    if(!n.isSeen()){
+                        if(!n.isFlagged()){
+                            btn.setText("!!");
+                        } else {
+                            btn.setText(":)");
+                        }
+                    } else {
+                        btn.setText(":(");
+                    }
+                }  else if (n.isSeen()){
+                    btn.setText("" + n.getAdj());
+                } else {
+                    btn.setText("");
+                }
             }
         }
     }
 
     /**
-     * Creates the inital BorderPane used for the program
+     * Creates the initial BorderPane used for the program
      * @param x - Size of Minesweeper Grid Width
      * @param y - Size of Minesweeper Grid Height
      * @return BorderPane - BorderPane containing a GridPane and a MenuBar
@@ -140,7 +160,7 @@ public class Renderer extends Application {
             if (dialogButton == ButtonType.APPLY) {
                 return new Pair<>(y.getText(), x.getText());
             }
-            return null;
+            return new Pair<>("8", "8");
         });
 
         Optional<Pair<String, String>> result = dialog.showAndWait();

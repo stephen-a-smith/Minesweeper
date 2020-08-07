@@ -68,8 +68,6 @@ public class Logic {
     private void leftClick(int x, int y){
         if(board.getNode(x, y).isFlagged() || board.getNode(x, y).isSeen()){
 
-        } else if (board.getNode(x, y).isMine()){
-            lose();
         } else {
             reveal(x, y);
         }
