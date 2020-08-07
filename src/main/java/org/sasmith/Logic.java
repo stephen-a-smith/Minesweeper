@@ -122,7 +122,7 @@ public class Logic {
         if(board.getNode(x, y).getAdj() == 0){
             for(int i = y-1; i < y+2; i++){
                 for (int j = x-1; j < x+2; j++) {
-                    if(i < 0 || i >= board.getX() || j < 0 || j >= board.getY() || board.getNode(j, i).isSeen() || board.getNode(j, i).isFlagged()){
+                    if(i < 0 || i >= board.getY() || j < 0 || j >= board.getX() || board.getNode(j, i).isSeen() || board.getNode(j, i).isFlagged()){
                         continue;
                     } else {
                         reveal(j, i);

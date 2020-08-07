@@ -210,7 +210,7 @@ public class Renderer extends Application {
         return btn;
     }
 
-    private static void Main(String[] args){
+    public static void main(String[] args){
         launch(args);
     }
 
