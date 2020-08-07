@@ -3,6 +3,8 @@ plugins {
     id 'application'
     id 'org.openjfx.javafxplugin' version '0.0.8'
     id 'org.beryx.jlink' version '2.12.0'
+    id 'com.github.johnrengelman.shadow' version '6.0.0'
+    id 'java'
 }
 
 repositories {
@@ -13,6 +15,7 @@ dependencies {
     runtimeOnly "org.openjfx:javafx-controls:$javafx.version:win"
     runtimeOnly "org.openjfx:javafx-controls:$javafx.version:linux"
     runtimeOnly "org.openjfx:javafx-controls:$javafx.version:mac"
+    shadow 'junit:junit:3.8.2'
 }
 
 javafx {
@@ -37,3 +40,9 @@ jlink {
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     }
  }
+
+shadowJar {
+    baseName = 'shadow'
+    classifier = ''
+    archiveVersion = ''
+}

@@ -76,7 +76,8 @@ public class Board {
     /**
      * Counts all the mines adjacent to a particular point on our Board
      * @param x - The X coordinate of our target Node
-     * @param y - The Y coordinate of our target Node */
+     * @param y - The Y coordinate of our target Node
+     * @return int - The number of adjacent flags*/
     private int countMines(int x, int y){
         int adj = 0;
         for(int i = y-1; i <= y+1; i++){
@@ -91,6 +92,12 @@ public class Board {
         return adj;
     }
 
+    /**
+     * Counts the number of Adjacent flags adjacent to an origin point
+     * @param x Co-ordinate of origin
+     * @param y Co-ordiante of origin
+     * @return int - Number of Adjacent Flags
+     */
     public int countFlags(int x, int y){
         int adj = 0;
         for(int i = y-1; i <= y+1; i++){
@@ -105,22 +112,33 @@ public class Board {
         return adj;
     }
 
-    public Node[][] getBoard() {
-        return board;
-    }
-
+    /**
+     * @return int - Number of Adjacent Mines
+     */
     public int getNumMines() {
         return numMines;
     }
 
+    /**
+     * @return int - Width of the Board
+     */
     public int getX() {
         return x;
     }
 
+    /**
+     * @return int - Height of the Board
+     */
     public int getY() {
         return y;
     }
 
+    /**
+     * Returns the Node at the specified coordinates
+     * @param x - The X coordinate of the requested Node
+     * @param y - The Y coordinate of the requested Node
+     * @return Node - The requested Node
+     */
     public Node getNode(int x, int y){
         return board[y][x];
     }

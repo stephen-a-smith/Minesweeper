@@ -20,15 +20,21 @@ import java.util.Iterator;
 import java.util.Optional;
 
 public class Renderer extends Application {
-    public Logic logic;
-    BorderPane window = createPanel(16, 16);
+    private Logic logic;
+    private BorderPane window = createPanel(16, 16);
 
+    /**
+     * Standard JavaFX start method
+     * @param stage - args
+     * @throws Exception
+     */
     @Override
     public void start(Stage stage) throws Exception {
         logic = new Logic(16, 16);
 
         Timeline update = new Timeline(new KeyFrame(Duration.millis(16), ev -> {
             update(((GridPane)window.getChildren().get(1)));
+            stage.sizeToScene();
             stage.show();
         }));
         update.setCycleCount(Animation.INDEFINITE);
@@ -40,7 +46,11 @@ public class Renderer extends Application {
 
     }
 
-
+    /**
+     * This is the update function for the Graphical Interface to Logic.
+     * This is called 60 times a second, and adjusts what the Buttons display based on information passed from Logic
+     * @param gp - The GridPane currently being operated on
+     */
     public void update(GridPane gp){
         Iterator btnIter = gp.getChildren().iterator();
         while(btnIter.hasNext()){
@@ -59,6 +69,12 @@ public class Renderer extends Application {
         }
     }
 
+    /**
+     * Creates the inital BorderPane used for the program
+     * @param x - Size of Minesweeper Grid Width
+     * @param y - Size of Minesweeper Grid Height
+     * @return BorderPane - BorderPane containing a GridPane and a MenuBar
+     */
     private BorderPane createPanel(int x, int y){
         BorderPane panel = new BorderPane();
         panel.setTop(createMenu());
@@ -67,28 +83,28 @@ public class Renderer extends Application {
         return panel;
     }
 
+    /**
+     * Creates the MenuBar used by the software
+     * @return MenuBar - The MenuBar used by the software
+     */
     private MenuBar createMenu(){
         MenuBar mb = new MenuBar();
         Menu m = new Menu("Game Options");
 
         MenuItem reset = new MenuItem("Reset");
-        EventHandler<ActionEvent> resetEvent = new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent e){
-                System.out.println("handler");
-                logic = new Logic(logic.getBoard().getX(), logic.getBoard().getY());
-            }
+        EventHandler<ActionEvent> resetEvent = e -> {
+            System.out.println("handler");
+            logic = new Logic(logic.getBoard().getX(), logic.getBoard().getY());
         };
         reset.setOnAction(resetEvent);
 
         MenuItem newGame = new MenuItem("New Game");
-        EventHandler<ActionEvent> newGameEvent = new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent e){
-                int[] temp = newGamePopup();
-                if(temp != null) {
-                    logic = new Logic(temp[0], temp[1]);
-                    window.getChildren().remove(1);
-                    window.setCenter(createField(temp[0], temp[1]));
-                }
+        EventHandler<ActionEvent> newGameEvent = e -> {
+            int[] temp = newGamePopup();
+            if(temp != null) {
+                logic = new Logic(temp[0], temp[1]);
+                window.getChildren().remove(1);
+                window.setCenter(createField(temp[0], temp[1]));
             }
         };
         newGame.setOnAction(newGameEvent);
@@ -98,6 +114,10 @@ public class Renderer extends Application {
         return mb;
     }
 
+    /**
+     * Creates a Dialog to allow the user to input new dimensions for their Minesweeper game.
+     * @return int[] - [0] = The requested Width; [1] = The Requested Height
+     */
     private int[] newGamePopup(){
         Dialog<Pair<String, String>> dialog = new Dialog<>();
         dialog.setTitle("New Game");
@@ -133,6 +153,12 @@ public class Renderer extends Application {
         return res;
     }
 
+    /**
+     * Creates a GridPane full of the required number of Buttons for the Minesweeper Game
+     * @param x - The Width of the Minesweeper Board
+     * @param y - The Height of the Minesweeper Board
+     * @return GridPane - The GridPane display of the Board
+     */
     private GridPane createField(int x, int y){
         GridPane gp = new GridPane();
         for(int i = 0; i < y; i++){
@@ -143,6 +169,13 @@ public class Renderer extends Application {
         return gp;
     }
 
+    /**
+     * Creates Buttons that can be used to update the logic of the board
+     * Stores their coordinates as a comma delimited string (x,y);
+     * @param x - The X coordinate of the Button
+     * @param y - The Y coordinate of the Button
+     * @return Button - The Button with update functions set
+     */
     private Button createButton(int x, int y){
         Button btn = new Button();
         btn.setPrefSize(30, 30);
