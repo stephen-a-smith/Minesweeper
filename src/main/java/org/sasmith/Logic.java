@@ -5,15 +5,27 @@ public class Logic {
     boolean winState, failState;
     int MinesLeft;
     boolean firstClick;
-    public Logic(Board board){
-        this.board = board;
+
+    public Logic(int x, int y){
+        System.out.println("NEW BOARD");
+        this.board = new Board(x, y);
         MinesLeft = board.getNumMines();
         winState = false;
         failState = false;
         firstClick = true;
     }
 
+    public Logic(int x, int y, int numMines){
+        this.board = new Board(x, y, numMines);
+        MinesLeft = board.getNumMines();
+        winState = false;
+        failState = false;
+        firstClick = true;
+    }
+
+
     public void update(int x, int y, int click){
+        if(failState){return;}
         if(firstClick){
             board.start(x, y);
             firstClick = false;
