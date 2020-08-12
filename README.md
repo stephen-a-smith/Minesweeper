@@ -5,5 +5,6 @@ This is my second time creating a Minesweeper game in Java, the first being a su
 
 # TODO 
 
+- Add Real Graphics
 - Add Seeded Board Generation
 - Add P2P Multiplayer (big task)
