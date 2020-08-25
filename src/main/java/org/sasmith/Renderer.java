@@ -41,10 +41,31 @@ public class Renderer extends Application {
         update.setCycleCount(Animation.INDEFINITE);
         update.play();
         Scene scene = new Scene(window);
+        scene.getStylesheets().add("styles.css");
         stage.setTitle("Hello World");
         stage.setScene(scene);
         stage.show();
 
+    }
+
+    /**
+     * Sets the color of the button to be based on the number of adj. mines
+     * @param n number of adjacent mines
+     * @return a css string to set the color of the button text
+     */
+    public String parseColour(int n){
+        switch(n){
+            case 0: return "-fx-text-fill: transparent;";
+            case 1: return "-fx-text-fill: blue;";
+            case 2: return "-fx-text-fill: green;";
+            case 3: return "-fx-text-fill: red;";
+            case 4: return "-fx-text-fill: navy;";
+            case 5: return "-fx-text-fill: dark-red;";
+            case 6: return "-fx-text-fill: teal;";
+            case 7: return "-fx-text-fill: black;";
+            case 8: return "-fx-text-fill: grey;";
+            default: return null;
+        }
     }
 
     /**
@@ -64,6 +85,7 @@ public class Renderer extends Application {
             if(!logic.getFailState()) {
                 if (n.isSeen() && !n.isMine()) {
                     btn.setText("" + n.getAdj());
+                    btn.setStyle(parseColour(n.getAdj()));
                 } else if (n.isFlagged()) {
                     btn.setText("*");
                 } else {
@@ -207,6 +229,7 @@ public class Renderer extends Application {
                 logic.update(x, y, 1);
             }
         });
+
         return btn;
     }
 
